@@ -4,6 +4,7 @@
 typedef struct arv
 {
     int info;
+    int nivel;
     struct arv *dir;
     struct arv *esq;
 } Arv;
@@ -25,64 +26,68 @@ Arv *ins_abb(int c, Arv *raiz)
     return raiz;
 }
 
-void impr_pre(Arv *a)
+void impr_nivel(Arv *a, int n)
 {
     if (a != NULL)
     {
-        printf(" %i", a->info); // raiz
-        impr_pre(a->esq);       // sub esq
-        impr_pre(a->dir);       // sub dir
+        if (a->nivel == n)
+        {
+            if (a->nivel == 0)
+            {
+                printf("%i", a->info);
+            }
+            else
+            {
+                printf(" %i", a->info);
+            }
+        }
+        impr_nivel(a->esq, n);
+        impr_nivel(a->dir, n);
     }
 }
 
-void impr_ord(Arv *a)
+void niveis(Arv *a, int n)
 {
     if (a != NULL)
     {
-        impr_ord(a->esq);      // sub esq
-        printf("%i", a->info); // raiz
-        impr_ord(a->dir);      // sub dir
+        a->nivel = n;          // nível do nó atual é n
+        niveis(a->esq, n + 1); // chama a subárvore esquerda com n+1
+        niveis(a->dir, n + 1); // chama a subárvore direita com n+1
     }
 }
 
-void impr_pos(Arv *a)
+int main()
 {
-    if (a != NULL)
-    {
-        impr_pos(a->esq);       // sub esq
-        impr_pos(a->dir);       // sub dir
-        printf(" %i", a->info); // raiz
-    }
-}
-
-int main(int argc, char const *argv[])
-{
-
     int numCasos, tamArv, elems;
 
-    scanf("%i", &numCasos);
+    scanf("%d", &numCasos);
 
-    for (int i = 0; i < numCasos; i++)
+    for (int i = 1; i <= numCasos; i++)
     {
-        scanf("%i", &tamArv);
+        scanf("%d", &tamArv);
         Arv *arv2 = NULL;
 
         for (int j = 0; j < tamArv; j++)
         {
-            scanf("%i", &elems);
-
-            do
-            {
-                scanf("%i", &elems);
-                arv2 = ins_abb(elems, arv2);
-
-            } while (elems <= 1 && elems <= 500);
-
-            printf("Case %i:\n", i + 1);
-            impr_pre(arv2);
-            printf("\n\n");
+            scanf(" %d", &elems);
+            arv2 = ins_abb(elems, arv2);
         }
 
-        return 0;
+        printf("Case %d:", i);
+        printf("\n");
+
+        niveis(arv2, 0);
+
+        // imprime cada nível da árvore
+        for (int j = 0; j < 500; j++)
+        {
+            impr_nivel(arv2, j);
+        }
+
+        printf("\n\n");
+        // libera a memória alocada pela árvore
+        free(arv2);
     }
+
+    return 0;
 }
