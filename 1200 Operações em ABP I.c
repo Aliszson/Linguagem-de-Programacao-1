@@ -1,115 +1,156 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include <string.h>
 
-typedef struct arv
+typedef struct no
 {
-    char info;
-    struct arv *dir;
-    struct arv *esq;
-} Arv;
+    int valor;
+    struct no *esq, *dir;
+} No;
 
-Arv *ins_abb(char c, Arv *raiz)
+No *criarNo(int valor)
+{
+    No *novoNo = (No *)malloc(sizeof(No));
+    novoNo->valor = valor;
+    novoNo->esq = NULL;
+    novoNo->dir = NULL;
+    return novoNo;
+}
+
+No *inserir(No *raiz, char valor)
 {
     if (raiz == NULL)
     {
-        Arv *n = (Arv *)malloc(sizeof(Arv));
-        n->info = c;
-        n->dir = n->esq = NULL;
-        return n;
+        return criarNo(valor);
     }
-    else if (c < raiz->info) // anda a esquerda
-        raiz->esq = ins_abb(c, raiz->esq);
-    else // anda a direita
-        raiz->dir = ins_abb(c, raiz->dir);
-
+    else if (valor < raiz->valor)
+    {
+        raiz->esq = inserir(raiz->esq, valor);
+    }
+    else if (valor > raiz->valor)
+    {
+        raiz->dir = inserir(raiz->dir, valor);
+    }
     return raiz;
 }
 
-void impr_pre(Arv *a)
+void impr_ord(No *raiz)
 {
-    if (a != NULL)
+    if (raiz != NULL)
     {
-        printf(" %c", a->info); // raiz
-        impr_pre(a->esq);       // sub esq
-        impr_pre(a->dir);       // sub dir
-    }
-}
-
-void impr_ord(Arv *a)
-{
-    if (a != NULL)
-    {
-        impr_ord(a->esq);       // sub esq
-        printf(" %c", a->info); // raiz
-        impr_ord(a->dir);       // sub dir
-    }
-}
-
-void impr_pos(Arv *a)
-{
-    if (a != NULL)
-    {
-        impr_pos(a->esq);       // sub esq
-        impr_pos(a->dir);       // sub dir
-        printf(" %c", a->info); // raiz
-    }
-}
-
-int main(int argc, char const *argv[])
-{
-    char letraComando, letraArv;
-    int valor, numInt, intNN;
-    Arv *arv2 = NULL;
-
-    scanf("%c", &letraComando);
-
-
-
-    while ((letraComando >= 65 && letraComando <= 90) || (letraComando >= 97 && letraComando <= 122))
-    {
-      
-        if (letraComando == 'I')
+        if (raiz->esq == NULL && raiz->dir == NULL)
         {
-            fflush(stdin);
-            scanf("%c", &letraArv);
-            arv2 = ins_abb(letraArv, arv2);
-              printf("A");
+            printf("%c", raiz->valor);
         }
-
-        if (letraComando == 'INFIXA')
+        else
         {
-            impr_ord(arv2);
+            impr_ord(raiz->esq);
+            printf(" %c", raiz->valor);
+            impr_ord(raiz->dir);
         }
-        
-        
-
-
-        
-        // for (int i = 1; i <= letraComando; i++)
-        // {
-        //     scanf("%i", &numInt);
-        //     Arv *arv2 = NULL;
-
-        //     for (int j = 0; j < numInt; j++)
-        //     {
-        //         scanf("%c", &intNN);
-        //         arv2 = ins_abb(intNN, arv2);
-        //     }
-
-        //     printf("Case %i:\n", i);
-        //     printf("Pre.:");
-        //     impr_pre(arv2);
-        //     printf("\n");
-        //     printf("In..:");
-        //     impr_ord(arv2);
-        //     printf("\n");
-        //     printf("Post:");
-        //     impr_pos(arv2);
-        //     printf("\n\n");
-        // }
     }
-    
+}
+
+void impr_pre(No *raiz)
+{
+    if (raiz != NULL)
+    {
+        if (raiz->esq == NULL && raiz->dir == NULL)
+        {
+            printf("%c", raiz->valor);
+        }
+        else
+        {
+            printf("%c ", raiz->valor);
+            impr_pre(raiz->esq);
+            impr_pre(raiz->dir);
+        }
+    }
+}
+
+void impr_pos(No *raiz)
+{
+    if (raiz != NULL)
+    {
+        impr_pos(raiz->esq);
+        impr_pos(raiz->dir);
+        printf("%c", raiz->valor);
+    }
+}
+
+
+int buscar(No *raiz, char valor)
+{
+    if (raiz == NULL || raiz->valor == valor)
+    {
+        return raiz;
+    }
+    else if (valor < raiz->valor)
+    {
+        return buscar(raiz->esq, valor);
+    }
+    else if (valor > raiz->valor)
+    {
+        return buscar(raiz->dir, valor);
+    }
+}
+
+void nula(No *raiz)
+{
+    if (raiz != NULL)
+    {
+        nula(raiz->esq);
+        nula(raiz->dir);
+        free(raiz);
+    }
+}
+
+int main()
+{
+    No *raiz = NULL;
+    char comando[8];
+    char valorChar;
+
+    while (scanf("%s", comando) != EOF)
+    {
+        if (strcmp(comando, "I") == 0)
+        {
+            scanf(" %c", &valorChar);
+            raiz = inserir(raiz, valorChar);
+        }
+        else if (strcmp(comando, "INFIXA") == 0)
+        {
+            impr_ord(raiz);
+            printf("\n");
+        }
+        else if (strcmp(comando, "PREFIXA") == 0)
+        {
+            impr_pre(raiz);
+            printf("\n");
+        }
+        else if (strcmp(comando, "POSFIXA") == 0)
+        {
+            impr_pos(raiz);
+            printf("\n");
+        }
+        else if (strcmp(comando, "P") == 0)
+        {
+            scanf(" %c", &valorChar);
+            No *arv = buscar(raiz, valorChar);
+            if (arv)
+            {
+                printf("%c existe", valorChar);
+                printf("\n");
+            }
+            else
+            {
+                printf("%c nao existe", valorChar);
+                printf("\n");
+            }
+        }
+    }
+
+    nula(raiz);
 
     return 0;
 }
