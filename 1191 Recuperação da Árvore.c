@@ -1,96 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-typedef struct arv
+typedef struct no
 {
     char info;
-    struct arv *dir;
-    struct arv *esq;
-} Arv;
+    struct no *esq;
+    struct no *dir;
+} No;
 
-Arv *ins_abb(int c, Arv *raiz)
+No *constroi_arvore(char *pre_ordem, char *em_ordem, int tam)
 {
-    if (raiz == NULL)
-    {
-        Arv *n = (Arv *)malloc(sizeof(Arv));
-        n->info = c;
-        n->dir = n->esq = NULL;
-        return n;
-    }
-    else if (c < raiz->info) // anda a esquerda
-        raiz->esq = ins_abb(c, raiz->esq);
-    else // anda a direita
-        raiz->dir = ins_abb(c, raiz->dir);
+
+    if (tam == 0)
+        return NULL;
+
+    No *raiz = (No *)malloc(sizeof(No));
+    raiz->info = pre_ordem[0];
+
+    int pos_raiz = 0;
+    while (em_ordem[pos_raiz] != pre_ordem[0])
+        pos_raiz++;
+
+    raiz->esq = constroi_arvore(pre_ordem + 1, em_ordem, pos_raiz);
+    raiz->dir = constroi_arvore(pre_ordem + pos_raiz + 1, em_ordem + pos_raiz + 1, tam - pos_raiz - 1);
 
     return raiz;
 }
 
-void impr_pre(Arv *a)
+void imprime_pos_ordem(No *raiz)
 {
-    if (a != NULL)
-    {
-        printf(" %c", a->info); // raiz
-        impr_pre(a->esq);       // sub esq
-        impr_pre(a->dir);       // sub dir
-    }
+    if (raiz == NULL)
+        return;
+
+    imprime_pos_ordem(raiz->esq);
+    imprime_pos_ordem(raiz->dir);
+    printf("%c", raiz->info);
 }
 
-void impr_ord(Arv *a)
+int main()
 {
-    if (a != NULL)
+    char pre_ordem[27], em_ordem[27];
+    No *raiz = NULL;
+
+    while (scanf("%s %s", pre_ordem, em_ordem) != EOF)
     {
-        impr_ord(a->esq);       // sub esq
-        printf(" %c", a->info); // raiz
-        impr_ord(a->dir);       // sub dir
+        int tam = strlen(pre_ordem); // Calcula o tamanho do vetor de pré-ordem (assumindo que ambos os vetores têm o mesmo tamanho)
+        raiz = constroi_arvore(pre_ordem, em_ordem, tam);
+        imprime_pos_ordem(raiz);
+        printf("\n");
+        free(raiz);
     }
-}
-
-void impr_pos(Arv *a)
-{
-    if (a != NULL)
-    {
-        impr_pos(a->esq);       // sub esq
-        impr_pos(a->dir);       // sub dir
-        printf(" %c", a->info); // raiz
-    }
-}
-
-int main(int argc, char const *argv[])
-{
-    char letra;
-    int valor, numInt, intNN;
-    Arv *arv2 = NULL;
-
-    scanf("%c", &valor);
-
-
-    if (letra != 'EOF')
-    {
-
-        for (int i = 1; i <= valor; i++)
-        {
-            scanf("%i", &numInt);
-            Arv *arv2 = NULL;
-
-            for (int j = 0; j < numInt; j++)
-            {
-                scanf("%c", &intNN);
-                arv2 = ins_abb(intNN, arv2);
-            }
-
-            printf("Case %i:\n", i);
-            printf("Pre.:");
-            impr_pre(arv2);
-            printf("\n");
-            printf("In..:");
-            impr_ord(arv2);
-            printf("\n");
-            printf("Post:");
-            impr_pos(arv2);
-            printf("\n\n");
-        }
-    }
-    
 
     return 0;
 }
