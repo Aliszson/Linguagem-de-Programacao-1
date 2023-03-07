@@ -1,0 +1,17 @@
+Carlos 21 / 3 / 1993 - 30 anos  
+Maria 24 / 1 / 1991 - 32 anos  
+João 27 / 4 / 1992 - 31 anos  
+Antônio 11 / 7 / 1997 - 26 anos  
+Pedro 10 / 6 / 1994 - 29 anos  
+Ana 22 / 9 / 1995 - 28 anos  
+Clara 17 / 2 / 1999 - 24 anos  
+Sofia 19 / 10 / 1990 - 33 anos  
+Julia 20 / 11 / 1998 - 25 anos  
+Mauro 18 / 3 / 1991 - 32 anos  
+Márcia 6 / 12 / 1997 - 26 anos  
+Joana 7 / 1 / 1993 - 30 anos  
+Diogo 9 / 7 / 1992 - 31 anos  
+Sérgio 1 / 2 / 1999 - 24 anos  
+Nara 21 / 11 / 1995 - 28 anos  
+Pessoa mais velha: Nara 0: 
+Pessoa mais nova: Carlos 0: 
