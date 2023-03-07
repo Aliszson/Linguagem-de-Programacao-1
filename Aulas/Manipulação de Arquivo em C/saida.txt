@@ -13,5 +13,5 @@ Joana 7 / 1 / 1993 - 30 anos
 Diogo 9 / 7 / 1992 - 31 anos  
 Sérgio 1 / 2 / 1999 - 24 anos  
 Nara 21 / 11 / 1995 - 28 anos  
-Pessoa mais velha: Nara 0: 
-Pessoa mais nova: Carlos 0: 
+Pessoa mais velha: Nara 28: 
+Pessoa mais nova: Carlos 28: 

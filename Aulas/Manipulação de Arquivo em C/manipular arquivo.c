@@ -9,6 +9,7 @@ typedef struct dados
     int dia;
     int mes;
     int ano;
+    int idade
 
 } Dados;
 
@@ -40,29 +41,20 @@ int main()
         humano[qntd].mes = atoi(mes);
         humano[qntd].ano = atoi(ano);
 
+        humano[qntd].idade = 2023 - humano[qntd].ano;
 
-        anoNasc = 2023 - humano[qntd].ano;
-        mesNasc = 30;
-
-        idade = (anoNasc * 365) + (mesNasc) + humano[qntd].dia;
-        idade /= 365;
-
-        if (idade > maisVelho) // veirifcar idade do mais velho
+        if (humano[qntd].idade > maisVelho) // veirifcar idade do mais velho
         {
             maisVelho = 2023 - humano[qntd].ano;
             posiVelho = qntd;
+            maisNovo = maisVelho;
         }
-
-        if (idade > maisNovo)
+        if (humano[qntd].idade < maisNovo)
         {
-
-            if (auxNovo < maisNovo || auxNovo != 0)
-            {
-                maisNovo = auxNovo;
-                posiNovo = qntd;
-            }
+            maisNovo = humano[qntd].idade;
+            posiNovo = qntd;
         }
-        idade = 0;
+
         qntd++;
     }
     fclose(in);
