@@ -4,11 +4,11 @@
 
 typedef struct no
 {
-    int valor;
+    char valor;
     struct no *esq, *dir;
 } No;
 
-No *criarNo(int valor)
+No *criarNo(char valor)
 {
     No *novoNo = (No *)malloc(sizeof(No));
     novoNo->valor = valor;
@@ -38,16 +38,9 @@ void impr_ord(No *raiz)
 {
     if (raiz != NULL)
     {
-        if (raiz->esq == NULL && raiz->dir == NULL)
-        {
-            printf("%c", raiz->valor);
-        }
-        else
-        {
-            impr_ord(raiz->esq);
-            printf(" %c", raiz->valor);
-            impr_ord(raiz->dir);
-        }
+        impr_ord(raiz->esq);
+        printf("%c ", raiz->valor);
+        impr_ord(raiz->dir);
     }
 }
 
@@ -55,16 +48,9 @@ void impr_pre(No *raiz)
 {
     if (raiz != NULL)
     {
-        if (raiz->esq == NULL && raiz->dir == NULL)
-        {
-            printf("%c", raiz->valor);
-        }
-        else
-        {
-            printf("%c ", raiz->valor);
-            impr_pre(raiz->esq);
-            impr_pre(raiz->dir);
-        }
+        printf("%c ", raiz->valor);
+        impr_pre(raiz->esq);
+        impr_pre(raiz->dir);
     }
 }
 
@@ -74,12 +60,11 @@ void impr_pos(No *raiz)
     {
         impr_pos(raiz->esq);
         impr_pos(raiz->dir);
-        printf("%c", raiz->valor);
+        printf("%c ", raiz->valor);
     }
 }
 
-
-int buscar(No *raiz, char valor)
+No *buscar(No *raiz, char valor)
 {
     if (raiz == NULL || raiz->valor == valor)
     {
@@ -93,6 +78,7 @@ int buscar(No *raiz, char valor)
     {
         return buscar(raiz->dir, valor);
     }
+    return NULL;
 }
 
 void nula(No *raiz)
@@ -111,7 +97,7 @@ int main()
     char comando[8];
     char valorChar;
 
-    while (scanf("%s", comando) != EOF)
+    while (scanf(" %s", comando) != EOF)
     {
         if (strcmp(comando, "I") == 0)
         {
@@ -121,17 +107,17 @@ int main()
         else if (strcmp(comando, "INFIXA") == 0)
         {
             impr_ord(raiz);
-            printf("\n");
+            puts("");
         }
         else if (strcmp(comando, "PREFIXA") == 0)
         {
             impr_pre(raiz);
-            printf("\n");
+            puts("");
         }
         else if (strcmp(comando, "POSFIXA") == 0)
         {
             impr_pos(raiz);
-            printf("\n");
+            puts("");
         }
         else if (strcmp(comando, "P") == 0)
         {
@@ -149,6 +135,7 @@ int main()
             }
         }
     }
+    
 
     nula(raiz);
 

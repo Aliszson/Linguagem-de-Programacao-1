@@ -1,41 +1,47 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-int main(int argc, char const *argv[])
-{
+typedef struct {
+    int nota;
+    int posicao;
+} Aluno;
 
-    int numAlunos, qtdCasos, aux, cont = 0;
+int cmp(const void* a, const void* b) {
+    Aluno* alunoA = (Aluno*)a;
+    Aluno* alunoB = (Aluno*)b;
 
-    scanf("%d", &qtdCasos);
+    if (alunoA->nota != alunoB->nota) {
+        return alunoB->nota - alunoA->nota;
+    } else {
+        return alunoA->posicao - alunoB->posicao;
+    }
+}
 
-    for (int k = 0; k < qtdCasos; k++)
-    {
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    while (n--) {
+        int numAlunos, nao_trocaram = 0;
 
         scanf("%d", &numAlunos);
-        int alunos[numAlunos];
 
-        for (int i = 0; i < numAlunos; i++)
-        {
-            scanf("%d", &alunos[i]);
+        Aluno qtdAlunos[numAlunos];
+
+        for (int i = 0; i < numAlunos; i++) {
+            scanf("%d", &qtdAlunos[i].nota);
+            qtdAlunos[i].posicao = i;
         }
 
-        cont = 0;
-        for (int i = 0; i < numAlunos; i++)
-        {
-            for (int j = i + 1; j < numAlunos; j++)
-            {
-                if (alunos[i] > alunos[j])
-                {
-                    aux = alunos[i];
-                    alunos[i] = alunos[j];
-                    alunos[j] = aux;
-                    cont++;
-                }
+        qsort(qtdAlunos, numAlunos, sizeof(Aluno), cmp);
+        
+        for (int i = 0; i < numAlunos; i++) {
+            if (qtdAlunos[i].posicao == i) {
+                nao_trocaram++;
             }
         }
-        
-        printf("%d \n", numAlunos - cont);
+
+        printf("%d\n", nao_trocaram);
     }
 
     return 0;

@@ -1,19 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct arv
+typedef struct No
 {
     int info;
     int nivel;
-    struct arv *dir;
-    struct arv *esq;
-} Arv;
+    struct No *dir;
+    struct No *esq;
+} No;
 
-Arv *ins_abb(int c, Arv *raiz)
+No *ins_abb(int c, No *raiz)
 {
     if (raiz == NULL)
     {
-        Arv *n = (Arv *)malloc(sizeof(Arv));
+        No *n = (No *)malloc(sizeof(No));
         n->info = c;
         n->dir = n->esq = NULL;
         return n;
@@ -26,7 +26,7 @@ Arv *ins_abb(int c, Arv *raiz)
     return raiz;
 }
 
-void impr_nivel(Arv *a, int n)
+void impr_nivel(No *a, int n)
 {
     if (a != NULL)
     {
@@ -46,7 +46,7 @@ void impr_nivel(Arv *a, int n)
     }
 }
 
-void niveis(Arv *a, int n)
+void niveis(No *a, int n)
 {
     if (a != NULL)
     {
@@ -65,7 +65,7 @@ int main()
     for (int i = 1; i <= numCasos; i++)
     {
         scanf("%d", &tamArv);
-        Arv *arv2 = NULL;
+        No *arv2 = NULL;
 
         for (int j = 0; j < tamArv; j++)
         {
